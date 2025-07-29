@@ -3,7 +3,7 @@ class Peer {
     this.id = socketId;
     this.roomId = roomId;
     this.producerTransport = null;
-    this.consumerTransport = null;
+    this.consumerTransport = null; // TODO: 여러 consumer 가능
     this.producers = new Map(); // kind -> Producer
     this.consumers = new Map(); // consumerId -> Consumer
   }

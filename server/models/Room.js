@@ -32,6 +32,7 @@ class Room {
         peerId: p.id,
         hasVideo: p.producers.has("video"),
         hasAudio: p.producers.has("audio"),
+        // TODO: producer 정보 필요
       }));
   }
 }
