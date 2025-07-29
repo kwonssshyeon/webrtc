@@ -93,16 +93,18 @@ function setupMediaHandlers(socket) {
   });
 
   // Consumer resume
-  socket.on("resume-consumer", async (data) => {
+  socket.on("resume-consumer", async (data, callback) => {
     const { consumerId } = data;
     const peer = roomManager.getPeer(socket.id);
 
     if (peer && peer.consumers.has(consumerId)) {
       try {
         await peer.consumers.get(consumerId).resume();
+        callback({ success: true });
         console.log(`Consumer resumed: ${consumerId} for peer ${socket.id}`);
       } catch (error) {
         console.error("Error resuming consumer:", error);
+        callback({ error: error.message });
       }
     }
   });

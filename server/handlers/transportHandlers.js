@@ -45,10 +45,10 @@ function setupTransportHandlers(socket) {
   });
 
   // Transport 연결
-  socket.on("connect-transport", async (data) => {
+  socket.on("connect-transport", async (data, callback) => {
     const { transportId, dtlsParameters } = data;
     const peer = roomManager.getPeer(socket.id);
-
+    console.log(`Peer: ${peer}`)
     if (!peer) return;
 
     try {
@@ -66,9 +66,12 @@ function setupTransportHandlers(socket) {
       if (transport) {
         await transport.connect({ dtlsParameters });
         console.log(`Transport ${transportId} connected for peer ${socket.id}`);
+        transport.connected = true;
+        callback({ success: true });
       }
     } catch (error) {
       console.error("Error connecting transport:", error);
+      callback({ error: error.message });
     }
   });
 }

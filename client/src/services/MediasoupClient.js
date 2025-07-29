@@ -92,14 +92,39 @@ export class MediasoupClient {
   }
 
   async produce(track, kind) {
-    if (!this.producerTransport || !track) return null;
+    console.log(`🔍 Attempting to produce ${kind}, track:`, track);
+    console.log(`🔍 Producer transport:`, this.producerTransport);
+    console.log(`🔍 Producer transport state:`, this.producerTransport?.connectionState);
+    console.log(`🔍 Producer transport closed:`, this.producerTransport?.closed);
+
+    if (!this.producerTransport || !track) {
+      console.error(`❌ Cannot produce ${kind}: transport=${!!this.producerTransport}, track=${!!track}`);
+      return null;
+    }
 
     try {
-      const producer = await this.producerTransport.produce({ track });
+      console.log(`✅ Before Producer created`);
+      const producerOptions = {
+            track : track,
+            appData: { mediaType: kind } // Make sure appData.mediaType matches the actual kind
+        };
+
+        if (kind === 'video') {
+            producerOptions.encodings = [
+                { rid: 'h', maxBitrate: 900000, scaleResolutionDownBy: 1 }, // High quality
+                { rid: 'm', maxBitrate: 300000, scaleResolutionDownBy: 2 }, // Medium quality
+                { rid: 'l', maxBitrate: 100000, scaleResolutionDownBy: 4 }  // Low quality
+            ];
+            // You might also add codecOptions for video here if needed
+        }
+        // For 'audio' kind, no 'encodings' are added
+
+      const producer = await this.producerTransport.produce({track});
+      console.log(`✅ Producer created for ${kind}:`, producer.id);
       this.producers.set(kind, producer);
       return producer;
     } catch (error) {
-      console.error(`Error producing ${kind}:`, error);
+      console.error(`❌ Error producing ${kind}:`, error);
       throw error;
     }
   }
@@ -128,6 +153,7 @@ export class MediasoupClient {
       });
 
       // 비디오인 경우 DOM에 연결
+      console.log(`MediasoupClient stream : ${kind} ${consumer.track}`)
       if (kind === "video") {
         MediaManager.setRemoteStream(peerId, consumer.track);
       }

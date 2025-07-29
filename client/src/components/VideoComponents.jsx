@@ -88,7 +88,7 @@ export const RemoteVideo = ({ peerId, peer }) => (
       비디오: {peer.hasVideo ? "✅" : "❌"} | 오디오:{" "}
       {peer.hasAudio ? "✅" : "❌"}
     </div>
-  </div>
+  </div> 
 );
 
 // 비디오 그리드 컨테이너

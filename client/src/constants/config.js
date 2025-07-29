@@ -1,6 +1,6 @@
 // constants/config.js
 export const SERVER_CONFIG = {
-  URL: "https://192.168.0.11:3001",
+  URL: "https://192.168.100.74:3001",
   OPTIONS: {
     transports: ["websocket", "polling"],
     upgrade: true,

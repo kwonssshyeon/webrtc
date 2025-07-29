@@ -1,15 +1,15 @@
 module.exports = {
   PORT: process.env.PORT || 3001,
-  HOST: process.env.HOST || "192.168.0.11",
+  HOST: process.env.HOST || "192.168.100.74",
 
   corsOptions: {
-    origin: ["https://localhost:3000", "https://192.168.0.11:3000"],
+    origin: ["https://localhost:3000", "https://192.168.100.74:3000"],
     credentials: true,
   },
 
   socketOptions: {
     cors: {
-      origin: ["https://localhost:3000", "https://192.168.0.11:3000"],
+      origin: ["https://localhost:3000", "https://192.168.100.74:3000"],
       methods: ["GET", "POST"],
       credentials: true,
     },
@@ -42,7 +42,7 @@ module.exports = {
       listenIps: [
         {
           ip: "0.0.0.0",
-          announcedIp: "192.168.0.11", // 실제 배포시에는 서버의 공인 IP로 변경
+          announcedIp: "192.168.100.74", // 실제 배포시에는 서버의 공인 IP로 변경
         },
       ],
       enableUdp: true,

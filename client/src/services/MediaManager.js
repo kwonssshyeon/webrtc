@@ -73,9 +73,12 @@ export class MediaManager {
   // 원격 비디오 스트림 설정
   static setRemoteStream(peerId, track) {
     const videoElement = document.getElementById(`video-${peerId}`);
+    console.log(`#### videoElement : ${videoElement}`)
+      console.log(`#### stream : ${track}`)
     if (videoElement && track) {
       const stream = new MediaStream([track]);
       videoElement.srcObject = stream;
+      
       videoElement.play().catch((e) => {
         console.log(`Remote video play failed for ${peerId}:`, e);
       });

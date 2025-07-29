@@ -31,8 +31,6 @@ const VideoChat = () => {
 
   return (
     <div style={{ padding: "20px", fontFamily: "Arial, sans-serif" }}>
-      <h1>Mediasoup N:N 화상채팅</h1>
-
       {/* 에러 메시지 */}
       <ErrorMessage message={error} onClose={clearError} />
 
