@@ -26,14 +26,16 @@ class Room {
   }
 
   getExistingPeersInfo(excludePeerId = null) {
-    return this.getPeers()
-      .filter((p) => p.id !== excludePeerId)
-      .map((p) => ({
-        peerId: p.id,
-        hasVideo: p.producers.has("video"),
-        hasAudio: p.producers.has("audio"),
-        // TODO: producer 정보 필요
-      }));
+    // return this.getPeers()
+    //   .filter((p) => p.id !== excludePeerId)
+    //   .map((p) => ({
+    //     peerId: p.id,
+    //     hasVideo: p.producers.has("video"),
+    //     hasAudio: p.producers.has("audio"),
+    //     // TODO: producer 정보 필요
+    //   }));
+      return this.getPeers()
+      .filter((p) => p.id !== excludePeerId);
   }
 }
 

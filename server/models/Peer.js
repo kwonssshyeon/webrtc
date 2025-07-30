@@ -20,6 +20,10 @@ class Peer {
     this.producers.set(kind, producer);
   }
 
+  getProducers() {
+    return Array.from(this.producers.values());
+  }
+
   addConsumer(consumerId, consumer) {
     this.consumers.set(consumerId, consumer);
   }

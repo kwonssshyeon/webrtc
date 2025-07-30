@@ -4,7 +4,7 @@ const roomManager = require("../services/roomManager");
 function setupMediaHandlers(socket) {
   // Producer 생성
   socket.on("produce", async (data, callback) => {
-    console.log(`Producer 생성 요청: ${JSON.stringify(data)}`);
+    console.log(`Producer 생성 요청`);
 
     try {
       const { kind, rtpParameters } = data;
@@ -43,7 +43,7 @@ function setupMediaHandlers(socket) {
 
   // Consumer 생성
   socket.on("consume", async (data, callback) => {
-    console.log(`Consumer 생성 요청: ${JSON.stringify(data)}`);
+    console.log(`Consumer 생성 요청`);
 
     try {
       const { producerId, rtpCapabilities } = data;
