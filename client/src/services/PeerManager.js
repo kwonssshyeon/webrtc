@@ -14,8 +14,8 @@ export class PeerManager {
     existingPeers.forEach((peer) => {
       this.peers.set(peer.peerId, {
         ...peer,
-        hasVideo: false,
-        hasAudio: false,
+        hasVideo: peer.hasVideo || false,
+        hasAudio: peer.hasVideo || false,
         videoElement: null,
       });
     });

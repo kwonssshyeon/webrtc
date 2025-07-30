@@ -68,8 +68,26 @@ export class RoomService {
 
     // 기존 피어들 정보 수신
     this.socketManager.on("existing-peers", (existingPeers) => {
-      console.log("Received existing peers:", existingPeers);
+      alert("Received existing peers:", existingPeers);
       this.peerManager.addExistingPeers(existingPeers);
+
+      // 각 피어의 producer 정보가 있다면 바로 consume 시도
+      existingPeers.forEach(peer => {
+        if (peer.producers && peer.producers.length > 0) {
+          console.log(`[ROOM DEBUG] Processing producers for existing peer ${peer.peerId}`);
+          
+          peer.producers.forEach(producer => {
+            console.log(`[ROOM DEBUG] Processing producer:`, producer);
+            
+            // new-producer 이벤트와 동일하게 처리
+            this.handleNewProducer({
+              peerId: peer.peerId,
+              producerId: producer.id,
+              kind: producer.kind
+            });
+          });
+        }
+      });
     });
 
     // 새 피어 참가
@@ -78,15 +96,10 @@ export class RoomService {
     });
 
     // 새 프로듀서 생성됨
-    this.socketManager.on("new-producer", async (data) => {
-      const { peerId, producerId, kind } = data;
-
-      try {
-        await this.mediasoupClient.consume(producerId, peerId, kind);
-        this.peerManager.updatePeerMedia(peerId, kind, true);
-      } catch (error) {
-        console.error("Error handling new producer:", error);
-      }
+    this.socketManager.on("new-producer", (data) => {
+      console.log("서버에서 new-producer 받음")
+      this.handleNewProducer(data);
+      console.log("서버에서 new-producer 받고 핸들링 완료")
     });
 
     // 컨슈머 종료
@@ -104,6 +117,20 @@ export class RoomService {
       console.error("Socket error:", error);
       throw new Error("소켓 오류: " + error.message);
     });
+  }
+
+
+  async handleNewProducer(data) {
+    const { peerId, producerId, kind } = data;
+
+      try {
+        this.peerManager.updatePeerMedia(peerId, kind, true);
+        console.log("eeeeeeeeeeeeeeeeeeeeeeeeee");
+        await this.mediasoupClient.consume(producerId, peerId, kind);
+      } catch (error) {
+        console.error("Error handling new producer:", error);
+        this.peerManager.updatePeerMedia(peerId, kind, false);
+      }
   }
 
   async produceMedia() {
